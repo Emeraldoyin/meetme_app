@@ -1,6 +1,25 @@
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatelessWidget {
+import 'start_page.dart';
+
+class SplashScreen extends StatefulWidget {
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Delay of 3 seconds before navigating to the StartPage
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => StartPage()),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () {
