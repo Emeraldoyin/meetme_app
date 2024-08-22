@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -9,58 +11,101 @@ class SummaryPage extends StatelessWidget {
   final String className;
   final XFile? profilePicture;
   final List<String> hobbies;
+  final String gender;
 
-  SummaryPage({
-    required this.name,
-    required this.age,
-    required this.className,
-    required this.profilePicture,
-    required this.hobbies,
-  });
+  SummaryPage(
+      {required this.name,
+      required this.age,
+      required this.className,
+      required this.profilePicture,
+      required this.hobbies,
+      required this.gender});
+
+  List<String> changeHobbySubject() {
+    List<String> newHobbies = [];
+    for (var sentence in hobbies) {
+      String eachHobby = name.isNotEmpty
+          ? sentence
+              .replaceAll("I", name)
+              .replaceAll("my", gender.toLowerCase() == "male" ? "his" : "her")
+          : sentence;
+      newHobbies.add(eachHobby);
+    }
+    return newHobbies;
+  }
 
   String _randomHobby() {
-    final random = (hobbies..shuffle()).first;
+    List<String> newHobbies = changeHobbySubject();
+    final random = (newHobbies..shuffle()).first;
     return random;
   }
 
   @override
   Widget build(BuildContext context) {
+    String sex = gender.toLowerCase();
+    String pronoun = sex == 'male' ? 'He' : 'She';
+    String pronoun2 = gender == 'male' ? 'him' : 'her';
     return Scaffold(
       appBar: AppBar(
-        title: Text('$name, $age'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+        title: Row(
           children: [
-            if (profilePicture != null) Image.file(File(profilePicture!.path)),
-            Text('Name: $name'),
-            Text('Age: $age'),
-            Text('Class: $className'),
-            Text('Hobbies: ${hobbies.join(', ')}'),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Fun Fact: ${_randomHobby()}'),
-                  ),
-                );
-              },
-              child: Text('Fun Fact'),
+            Image.asset(
+              "images/mm.png",
+              scale: 12,
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EndSessionPage(),
-                  ),
-                );
-              },
-              child: Text('End Session'),
+            Text(
+              'Meet $name, $age years old',
+              style: TextStyle(fontFamily: 'MyFont'),
             ),
           ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              if (profilePicture != null)
+                Image.file(
+                  File(profilePicture!.path),
+                  width: 300,
+                  height: 300,
+                ),
+              Text(
+                'Here is $name',
+                style: TextStyle(fontFamily: 'MyFont'),
+              ),
+              Text(
+                  'A $age year old $sex student of TOP RANK COLLEGE\n$pronoun is currently in $className',
+                  style: TextStyle(fontFamily: 'MyFont')),
+              Text(
+                  "Click the 'fun fact' button to see something interesting about $pronoun2",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(fontFamily: 'MyFont')),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(_randomHobby()),
+                    ),
+                  );
+                },
+                child: Text('Fun Fact'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EndSessionPage(),
+                    ),
+                  );
+                },
+                child: Text('End Session'),
+              ),
+            ],
+          ),
         ),
       ),
     );

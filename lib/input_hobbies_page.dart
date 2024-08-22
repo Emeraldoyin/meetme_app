@@ -8,13 +8,14 @@ class InputHobbiesPage extends StatefulWidget {
   final String age;
   final String className;
   final XFile? profilePicture;
+  final String gender;
 
-  InputHobbiesPage({
-    required this.name,
-    required this.age,
-    required this.className,
-    required this.profilePicture,
-  });
+  InputHobbiesPage(
+      {required this.name,
+      required this.age,
+      required this.className,
+      required this.profilePicture,
+      required this.gender});
 
   @override
   _InputHobbiesPageState createState() => _InputHobbiesPageState();
@@ -26,11 +27,18 @@ class _InputHobbiesPageState extends State<InputHobbiesPage> {
   final TextEditingController _hobbyController = TextEditingController();
 
   void _addHobby() {
-    if (_hobbyController.text.length >= 10) {
+    int hobbyWords = _hobbyController.text.split(" ").length;
+    if (hobbyWords >= 2) {
       setState(() {
         hobbies.add(_hobbyController.text);
       });
       _hobbyController.clear();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Write at least three words about each of your hobby'),
+        ),
+      );
     }
   }
 
@@ -38,15 +46,33 @@ class _InputHobbiesPageState extends State<InputHobbiesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.name}, ${widget.age}'),
+        title: Row(
+          children: [
+            Image.asset(
+              "images/mm.png",
+              scale: 12,
+            ),
+            Text(
+              'One more thing, ${widget.name}',
+              style: TextStyle(fontFamily: 'MyFont'),
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            Text(
+              "Tell us at least three of your hobbies",
+              style: TextStyle(fontFamily: 'MyFont'),
+            ),
             TextField(
               controller: _hobbyController,
-              decoration: InputDecoration(labelText: 'Enter a hobby'),
+              decoration: InputDecoration(labelText: 'enter a hobby'),
+            ),
+            SizedBox(
+              height: 20,
             ),
             ElevatedButton(
               onPressed: _addHobby,
@@ -74,6 +100,7 @@ class _InputHobbiesPageState extends State<InputHobbiesPage> {
                         className: widget.className,
                         profilePicture: widget.profilePicture,
                         hobbies: hobbies,
+                        gender: widget.gender,
                       ),
                     ),
                   );

@@ -5,8 +5,9 @@ import 'upload_profile_picture_page.dart';
 class InputClassPage extends StatelessWidget {
   final String name;
   final String age;
+  final String gender;
 
-  InputClassPage({required this.name, required this.age});
+  InputClassPage({required this.name, required this.age, required this.gender});
 
   final TextEditingController _classController = TextEditingController();
 
@@ -14,7 +15,18 @@ class InputClassPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$name, $age'),
+        title: Row(
+          children: [
+            Image.asset(
+              "images/mm.png",
+              scale: 12,
+            ),
+            Text(
+              'Hello $name,',
+              style: TextStyle(fontFamily: 'MyFont'),
+            ),
+          ],
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -22,7 +34,11 @@ class InputClassPage extends StatelessWidget {
           children: [
             TextField(
               controller: _classController,
-              decoration: InputDecoration(labelText: 'Class'),
+              decoration: InputDecoration(
+                  labelText: 'Insert your current class level (e.g Year 1)'),
+            ),
+            SizedBox(
+              height: 20,
             ),
             ElevatedButton(
               onPressed: () {
@@ -33,6 +49,7 @@ class InputClassPage extends StatelessWidget {
                       name: name,
                       age: age,
                       className: _classController.text,
+                      gender: gender,
                     ),
                   ),
                 );

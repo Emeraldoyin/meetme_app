@@ -43,9 +43,13 @@ class _EndSessionPageState extends State<EndSessionPage>
           children: [
             Transform.rotate(
               angle: _animation.value,
+              // child: Image.asset(
+              //   'images/school_logo.png',
+              //   scale: 2,
+              // ),
               child: Icon(
                 Icons.stars,
-                color: Colors.blue,
+                color: Colors.purple,
                 size: 100,
               ),
             ),
