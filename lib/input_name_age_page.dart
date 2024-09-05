@@ -15,11 +15,11 @@ class _InputNameAgePageState extends State<InputNameAgePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      // backgroundColor: Colors.white,
       appBar: AppBar(
-        elevation: 12.0,
+        elevation: 15.0,
         shadowColor: Colors.white,
-        backgroundColor: Colors.pink,
+        backgroundColor: Colors.blue,
         title: Row(
           children: [
             Image.asset(
@@ -42,7 +42,7 @@ class _InputNameAgePageState extends State<InputNameAgePage> {
             children: [
               TextField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(labelText: 'First name'),
               ),
               TextField(
                 controller: _ageController,
@@ -51,9 +51,9 @@ class _InputNameAgePageState extends State<InputNameAgePage> {
               ),
               SizedBox(height: 16),
               ListTile(
-                title: const Text('man'),
+                title: const Text('Male'),
                 leading: Radio<String>(
-                  value: 'Male',
+                  value: 'male',
                   groupValue: gender,
                   onChanged: (value) {
                     setState(() {
@@ -63,9 +63,9 @@ class _InputNameAgePageState extends State<InputNameAgePage> {
                 ),
               ),
               ListTile(
-                title: const Text('woman'),
+                title: const Text('Female'),
                 leading: Radio<String>(
-                  value: 'woman',
+                  value: 'female',
                   groupValue: gender,
                   onChanged: (value) {
                     setState(() {
@@ -79,7 +79,24 @@ class _InputNameAgePageState extends State<InputNameAgePage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  if (gender != null) {
+                  if (_nameController.text.isEmpty) {
+                    // Name is empty, show SnackBar for name
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.black,
+                        content: Text('Please enter your name'),
+                      ),
+                    );
+                  } else if (gender == null) {
+                    // Gender is not selected, show SnackBar for gender
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.black,
+                        content: Text('Please choose a gender'),
+                      ),
+                    );
+                  } else {
+                    // Both name and gender are provided, navigate to the next page
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -88,13 +105,6 @@ class _InputNameAgePageState extends State<InputNameAgePage> {
                           age: _ageController.text,
                           gender: gender ?? 'male',
                         ),
-                      ),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        backgroundColor: Colors.white,
-                        content: Text('Please choose a gender'),
                       ),
                     );
                   }

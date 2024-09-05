@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -54,39 +52,55 @@ class SummaryPage extends StatelessWidget {
               scale: 12,
             ),
             Text(
-              'Meet $name, $age years old',
-              style: TextStyle(fontFamily: 'MyFont'),
+              'Meet ${name.toUpperCase()}${age.isNotEmpty ? ", $age years old" : ""}',
+              style: TextStyle(fontFamily: 'MyFont', fontSize: 20),
             ),
           ],
         ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: Center(
           child: Column(
             children: [
-              if (profilePicture != null)
-                Image.file(
-                  File(profilePicture!.path),
-                  width: 300,
-                  height: 300,
-                ),
-              Text(
-                'Here is $name',
-                style: TextStyle(fontFamily: 'MyFont'),
+              SizedBox(
+                height: 30,
               ),
-              Text(
-                  'A $age year old $sex student of TOP RANK COLLEGE\n$pronoun is currently in $className',
-                  style: TextStyle(fontFamily: 'MyFont')),
-              Text(
-                  "Click the 'fun fact' button to see something interesting about $pronoun2",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(fontFamily: 'MyFont')),
+              Container(
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    boxShadow: [BoxShadow(color: Colors.blueGrey)],
+                    border: Border.all(color: Colors.blue, width: 10)),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      if (profilePicture != null)
+                        Image.file(
+                          File(profilePicture!.path),
+                          width: 300,
+                          height: 300,
+                        ),
+                      Text(
+                        'Here is $name',
+                        style: TextStyle(fontFamily: 'MyFont'),
+                      ),
+                      Text(
+                          'A ${age.isNotEmpty ? "$age year old $sex student of \nTOP RANK MODEL COLLEGE" : " $sex student of \nTOP RANK MODEL COLLEGE"}${className.isNotEmpty ? "\n$pronoun is currently in $className" : ""}',
+                          style: TextStyle(fontFamily: 'MyFont')),
+                      Text(
+                          "Click the 'fun fact' button to see \nsomething interesting about $pronoun2",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(fontFamily: 'MyFont')),
+                    ],
+                  ),
+                ),
+              ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
+                      duration: Duration(seconds: 2),
                       content: Text(_randomHobby()),
                     ),
                   );

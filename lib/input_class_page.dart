@@ -2,19 +2,30 @@ import 'package:flutter/material.dart';
 
 import 'upload_profile_picture_page.dart';
 
-class InputClassPage extends StatelessWidget {
+class InputClassPage extends StatefulWidget {
   final String name;
   final String age;
   final String gender;
 
   InputClassPage({required this.name, required this.age, required this.gender});
 
+  @override
+  State<InputClassPage> createState() => _InputClassPageState();
+}
+
+class _InputClassPageState extends State<InputClassPage> {
   final TextEditingController _classController = TextEditingController();
+
+  String? selectedClass;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        elevation: 15.0,
+        backgroundColor: Colors.blue,
+        shadowColor: Colors.white,
         title: Row(
           children: [
             Image.asset(
@@ -22,7 +33,7 @@ class InputClassPage extends StatelessWidget {
               scale: 12,
             ),
             Text(
-              'Hello $name,',
+              'Hello ${widget.name},',
               style: TextStyle(fontFamily: 'MyFont'),
             ),
           ],
@@ -32,10 +43,30 @@ class InputClassPage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: _classController,
+            DropdownButtonFormField<String>(
+              value: selectedClass,
               decoration: InputDecoration(
-                  labelText: 'Insert your current class level (e.g Year 1)'),
+                labelText: 'Select your current class level',
+                border: OutlineInputBorder(),
+              ),
+              items: [
+                'Year 7',
+                'Year 8',
+                'Year 9',
+                'Year 10',
+                'Year 11',
+                'Year 12'
+              ].map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                setState(() {
+                  selectedClass = newValue; // Save the selected value
+                });
+              },
             ),
             SizedBox(
               height: 20,
@@ -46,10 +77,10 @@ class InputClassPage extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => UploadProfilePicturePage(
-                      name: name,
-                      age: age,
-                      className: _classController.text,
-                      gender: gender,
+                      name: widget.name,
+                      age: widget.age,
+                      className: selectedClass ?? "",
+                      gender: widget.gender,
                     ),
                   ),
                 );

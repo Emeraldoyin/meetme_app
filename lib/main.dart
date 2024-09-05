@@ -1,5 +1,5 @@
+import 'package:MeetMe/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:meetme_app/splash_screen.dart';
 
 void main() {
   runApp(MeetMeApp());

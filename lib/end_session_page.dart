@@ -1,6 +1,6 @@
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart'; // Import this for SystemNavigator
 
 class EndSessionPage extends StatefulWidget {
   @override
@@ -43,27 +43,39 @@ class _EndSessionPageState extends State<EndSessionPage>
           children: [
             Transform.rotate(
               angle: _animation.value,
+              child: Icon(
+                Icons.stars,
+                size: 120,
+                color: Colors.blue,
+              ),
               // child: Image.asset(
               //   'images/school_logo.png',
               //   scale: 2,
               // ),
-              child: Icon(
-                Icons.stars,
-                color: Colors.purple,
-                size: 100,
-              ),
             ),
             SizedBox(height: 20),
             Text(
               'Take a Bow!',
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
               child: Text('Back to Start'),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                SystemNavigator.pop(); // Exits the app safely
+              },
+              child: Text(
+                'Exit',
+                style: TextStyle(
+                    color: Colors.black,
+                    shadows: [Shadow(color: Colors.white)]),
+              ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
             ),
           ],
         ),
